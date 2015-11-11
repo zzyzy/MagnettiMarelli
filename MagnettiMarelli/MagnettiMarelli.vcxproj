@@ -28,6 +28,7 @@
     <ClInclude Include="include\SQLiteCpp\SQLiteCpp.h" />
     <ClInclude Include="include\SQLiteCpp\Statement.h" />
     <ClInclude Include="include\SQLiteCpp\Transaction.h" />
+    <ClInclude Include="include\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="src\SQLiteCpp\Database.cpp" />
     <ClCompile Include="src\SQLiteCpp\Statement.cpp" />
     <ClCompile Include="src\SQLiteCpp\Transaction.cpp" />
+    <ClCompile Include="src\Utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E1B811C6-BE8C-41AC-A7EC-92B2510D085E}</ProjectGuid>

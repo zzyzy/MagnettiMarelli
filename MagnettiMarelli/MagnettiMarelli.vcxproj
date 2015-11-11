@@ -19,23 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sqlite3\sqlite3.h" />
-    <ClInclude Include="sqlite3\sqlite3ext.h" />
-    <ClInclude Include="SQLiteCpp\Assertion.h" />
-    <ClInclude Include="SQLiteCpp\Column.h" />
-    <ClInclude Include="SQLiteCpp\Database.h" />
-    <ClInclude Include="SQLiteCpp\Exception.h" />
-    <ClInclude Include="SQLiteCpp\SQLiteCpp.h" />
-    <ClInclude Include="SQLiteCpp\Statement.h" />
-    <ClInclude Include="SQLiteCpp\Transaction.h" />
+    <ClInclude Include="include\sqlite3\sqlite3.h" />
+    <ClInclude Include="include\sqlite3\sqlite3ext.h" />
+    <ClInclude Include="include\SQLiteCpp\Assertion.h" />
+    <ClInclude Include="include\SQLiteCpp\Column.h" />
+    <ClInclude Include="include\SQLiteCpp\Database.h" />
+    <ClInclude Include="include\SQLiteCpp\Exception.h" />
+    <ClInclude Include="include\SQLiteCpp\SQLiteCpp.h" />
+    <ClInclude Include="include\SQLiteCpp\Statement.h" />
+    <ClInclude Include="include\SQLiteCpp\Transaction.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="sqlite3\sqlite3.c" />
-    <ClCompile Include="SQLiteCpp\Column.cpp" />
-    <ClCompile Include="SQLiteCpp\Database.cpp" />
-    <ClCompile Include="SQLiteCpp\Statement.cpp" />
-    <ClCompile Include="SQLiteCpp\Transaction.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\sqlite3\sqlite3.c" />
+    <ClCompile Include="src\SQLiteCpp\Column.cpp" />
+    <ClCompile Include="src\SQLiteCpp\Database.cpp" />
+    <ClCompile Include="src\SQLiteCpp\Statement.cpp" />
+    <ClCompile Include="src\SQLiteCpp\Transaction.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E1B811C6-BE8C-41AC-A7EC-92B2510D085E}</ProjectGuid>
@@ -87,7 +87,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir)include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>

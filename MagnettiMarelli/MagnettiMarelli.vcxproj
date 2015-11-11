@@ -21,10 +21,21 @@
   <ItemGroup>
     <ClInclude Include="sqlite3\sqlite3.h" />
     <ClInclude Include="sqlite3\sqlite3ext.h" />
+    <ClInclude Include="SQLiteCpp\Assertion.h" />
+    <ClInclude Include="SQLiteCpp\Column.h" />
+    <ClInclude Include="SQLiteCpp\Database.h" />
+    <ClInclude Include="SQLiteCpp\Exception.h" />
+    <ClInclude Include="SQLiteCpp\SQLiteCpp.h" />
+    <ClInclude Include="SQLiteCpp\Statement.h" />
+    <ClInclude Include="SQLiteCpp\Transaction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="sqlite3\sqlite3.c" />
+    <ClCompile Include="SQLiteCpp\Column.cpp" />
+    <ClCompile Include="SQLiteCpp\Database.cpp" />
+    <ClCompile Include="SQLiteCpp\Statement.cpp" />
+    <ClCompile Include="SQLiteCpp\Transaction.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E1B811C6-BE8C-41AC-A7EC-92B2510D085E}</ProjectGuid>

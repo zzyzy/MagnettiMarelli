@@ -19,8 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Controller.h" />
-    <ClInclude Include="include\Login.h" />
     <ClInclude Include="include\sqlite3\sqlite3.h" />
     <ClInclude Include="include\sqlite3\sqlite3ext.h" />
     <ClInclude Include="include\SQLiteCpp\Assertion.h" />
@@ -31,21 +29,16 @@
     <ClInclude Include="include\SQLiteCpp\Statement.h" />
     <ClInclude Include="include\SQLiteCpp\Transaction.h" />
     <ClInclude Include="include\Team.h" />
-    <ClInclude Include="include\TeamController.h" />
     <ClInclude Include="include\Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Controller.cpp" />
-    <ClCompile Include="src\Login.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Source.cpp" />
     <ClCompile Include="src\sqlite3\sqlite3.c" />
     <ClCompile Include="src\SQLiteCpp\Column.cpp" />
     <ClCompile Include="src\SQLiteCpp\Database.cpp" />
     <ClCompile Include="src\SQLiteCpp\Statement.cpp" />
     <ClCompile Include="src\SQLiteCpp\Transaction.cpp" />
     <ClCompile Include="src\Team.cpp" />
-    <ClCompile Include="src\TeamController.cpp" />
     <ClCompile Include="src\Utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

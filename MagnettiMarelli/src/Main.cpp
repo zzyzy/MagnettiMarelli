@@ -10,7 +10,7 @@ using std::cin;
 using std::cerr;
 using std::endl;
 
-int main()
+int main2()
 {
 	SQLite::Database db("database/MMDatabase.db", SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
 	string OICId;

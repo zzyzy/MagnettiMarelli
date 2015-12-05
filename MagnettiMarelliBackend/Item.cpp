@@ -12,7 +12,7 @@ int Item::getQuantity() const
 
 std::string Item::getOic() const
 {
-	return oic;
+	return oic;	
 }
 
 void Item::setType(const std::string &type)

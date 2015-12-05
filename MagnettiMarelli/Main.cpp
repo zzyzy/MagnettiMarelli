@@ -3,6 +3,9 @@
 #include <unordered_map>
 
 #include <SQLiteCpp/SQLiteCpp.h>
+#include <Item.h>
+#include <ItemException.h>
+#include <Request.h>
 #include <Utils.h>
 
 using namespace std;
@@ -11,12 +14,95 @@ SQLite::Database db("database/MagnettiMarelli.db", SQLITE_OPEN_READWRITE);
 
 const int MAX_TRIES = 3;
 
+unordered_map<std::string, Item> itemTable;
+unordered_map<int, Request> requestTable;
+
+void loadItemTable()
+{
+	SQLite::Statement stmt(db, "SELECT * FROM Item");
+	while (stmt.executeStep()) {
+		Item item;
+		item.setType(stmt.getColumn("Type").getText());
+		item.setQuantity(stmt.getColumn("Quantity").getInt());
+		item.setOic(stmt.getColumn("OIC").getText());
+		itemTable.insert({ item.getType(), item });
+	}
+}
+
+void saveItem(const Item &item)
+{
+	SQLite::Statement stmt(db, "UPDATE Item SET Quantity=?, OIC=? WHERE Type=?");
+	stmt.bind(1, item.getQuantity());
+	stmt.bind(2, item.getOic());
+	stmt.bind(3, item.getType());
+	stmt.exec();
+}
+
+void saveItemTable()
+{
+	for (pair<std::string, Item> p : itemTable) {
+		saveItem(p.second);
+	}
+}
+
 bool findOIC(const std::string &name)
 {
 	SQLite::Statement stmt(db, "SELECT * FROM OIC WHERE Name=?");
 	stmt.bind(1, name);
 	stmt.executeStep();
 	return stmt.isOk();
+}
+
+void loadRequestTable()
+{
+	SQLite::Statement stmt(db, "SELECT * FROM Request");
+	while (stmt.executeStep()) {
+		Request request;
+		request.setId(stmt.getColumn("ID").getInt());
+		request.setQuantity(stmt.getColumn("Quantity").getInt());
+		request.setRequestDate(stmt.getColumn("Request Date").getText());
+		request.setDeliveryDate(stmt.getColumn("Delivery Date").getText());
+		request.setStatus(stmt.getColumn("Status").getText());
+		request.setTeam(stmt.getColumn("Team").getText());
+		request.setItem(stmt.getColumn("Item").getText());
+		request.setOic(stmt.getColumn("OIC").getText());
+		//requestTable.insert(request);
+		requestTable.insert({ request.getId(), request });
+	}
+}
+
+void saveRequest(const Request &request)
+{
+	SQLite::Statement stmt(db, "UPDATE Request SET Quantity=?, \"Request Date\"=?, \
+		\"Delivery Date\"=?, Status=?, Team=?, Item=?, OIC=? WHERE ID=?");
+	stmt.bind(1, request.getQuantity());
+	stmt.bind(2, request.getRequestDate());
+	stmt.bind(3, request.getDeliveryDate());
+	stmt.bind(4, request.getStatus());
+	stmt.bind(5, request.getTeam());
+	stmt.bind(6, request.getItem());
+	stmt.bind(7, request.getOic());
+	stmt.bind(8, request.getId());
+	stmt.exec();
+}
+
+void saveRequestTable()
+{
+	for (pair<int, Request> p : requestTable) {
+		saveRequest(p.second);
+	}
+}
+
+void initInMemoryDb()
+{
+	loadItemTable();
+	loadRequestTable();
+}
+
+void commitInMemoryDb()
+{
+	saveItemTable();
+	saveRequestTable();
 }
 
 bool findOIC(const std::string &name, const std::string &password)
@@ -68,6 +154,81 @@ void showTeams(const unordered_map<int, string> &managedTeams)
 	}
 }
 
+unordered_map<int, Request> fetchRequests(const std::string &team, const std::string &status)
+{
+	int i = 0;
+	unordered_map<int, Request> requests;
+	for (pair<int, Request> p : requestTable) {
+		if (p.second.getTeam() == team && p.second.getStatus() == status) {
+			requests.insert({ ++i, p.second });
+		}
+	}
+	return requests;
+}
+
+void showRequests(const unordered_map<int, Request> &requests)
+{
+	for (pair<int, Request> p : requests) {
+		cout << p.first << " - " << p.second.getTeam() << " - " << p.second.getItem() << " - " << p.second.getStatus() << endl;
+	}
+}
+
+void approveRequest(Request &request)
+{
+	Item& item = itemTable.at(request.getItem());
+	if (item.getQuantity() >= request.getQuantity()) {
+		request.setStatus("Approved");
+		item.deductQuantity(request.getQuantity());
+	}
+	else {
+		cout << "Not enough stock to process request" << endl;
+	}
+}
+
+void RequestProcessPage(Request &request)
+{
+	system("cls");
+	char choice;
+
+	cout << request.getTeam() << " - " << request.getItem() << endl;
+	cout << "Y - Approve" << endl;
+	cout << "N - Decline" << endl;
+	cout << "> "; cin >> choice; cin.ignore();
+	while (choice != 'Y' && choice != 'N' && choice != 'y' && choice != 'n') {
+		cout << "Invalid choice. Try again" << endl;
+		cout << "> "; cin >> choice; cin.ignore();
+	}
+
+	if (choice == 'y' || choice == 'Y') {
+		approveRequest(request);
+	}
+	system("cls");
+}
+
+void TeamRequestPage(const string &name)
+{
+	system("cls");
+	char choice;
+	unordered_map<int, Request> requests;
+
+	cout << name << endl;
+	do {
+		requests = fetchRequests(name, Request::PENDING);
+		showRequests(requests);
+		cout << "# - Back" << endl;
+		cout << "> "; cin >> choice; cin.ignore();
+		while (choice != '#' && isdigit(choice) && requests.find(choice - '0') == requests.end()) {
+			cout << "Invalid Request ID. Try again" << endl;
+			cout << "> "; cin >> choice; cin.ignore();
+		}
+
+		if (choice != '#') {
+			RequestProcessPage(requestTable.at(requests.at(choice - '0').getId()));
+		}
+	} while (choice != '#');
+	system("cls");
+}
+
 void TeamPage(const std::string &name)
 {
 	system("cls");
@@ -86,7 +247,7 @@ void TeamPage(const std::string &name)
 		}
 
 		if (choice != '#') {
-			//TeamRequestPage(managedTeams.at(choice - '0'));
+			TeamRequestPage(managedTeams.at(choice - '0'));
 		}
 	} while (choice != '#');
 	system("cls");
@@ -170,6 +331,7 @@ void MainPage()
 	char choice;
 	unordered_map<string, int> tries;
 
+	initInMemoryDb();
 	do {
 		cout << "1 - Login" << endl;
 		cout << "2 - Quit" << endl;
@@ -183,6 +345,7 @@ void MainPage()
 			verifyOICName(tries);
 		}
 	} while (choice != '2');
+	commitInMemoryDb();
 	system("cls");
 }
 

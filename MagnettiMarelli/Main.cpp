@@ -16,6 +16,7 @@ const int MAX_TRIES = 3;
 
 unordered_map<std::string, Item> itemTable;
 unordered_map<std::string, Item> addItemTable;
+unordered_map<std::string, Item> deleteItemTable;
 unordered_map<int, Request> requestTable;
 
 void loadItemTable()
@@ -48,6 +49,13 @@ void addItem(const Item &item)
 	stmt.exec();
 }
 
+void deleteItem(const Item &item)
+{
+	SQLite::Statement stmt(db, "DELETE FROM Item WHERE Type=?");
+	stmt.bind(1, item.getType());
+	stmt.exec();
+}
+
 void saveItemTable()
 {
 	for (pair<std::string, Item> p : itemTable) {
@@ -57,6 +65,12 @@ void saveItemTable()
 	if (!addItemTable.empty()) {
 		for (pair<std::string, Item> p : addItemTable) {
 			addItem(p.second);
+		}
+	}
+
+	if (!deleteItemTable.empty()) {
+		for (pair<std::string, Item> p : deleteItemTable) {
+			deleteItem(p.second);
 		}
 	}
 }
@@ -368,6 +382,28 @@ void addLocalItem(const std::string &type, const int &quantity, const std::strin
 	addItemTable.insert({ item.getType(), item });
 }
 
+void showItemDetails(const Item& item)
+{
+	cout << "Item type - " << item.getType() << endl;
+	cout << "Quantity - " << item.getQuantity() << endl;
+	cout << "In charge by - " << item.getOic() << endl;
+}
+
+void deleteLocalItem(const char &id, const std::string &type)
+{
+	Item item;
+	item = fetchLocalItem(type);
+
+	deleteItemTable.insert({ item.getType(), item });
+
+	if (!isItemNew(type)) {
+		itemTable.erase(type);
+	}
+	else {
+		addItemTable.erase(type);
+	}
+}
+
 void AddItemPage(const std::string &name)
 {
 	system("cls");
@@ -452,6 +488,56 @@ void UpdateStockPage(const std::string &name)
 	system("cls");
 }
 
+void ItemRemoveProcessPage(const char &id, const std::string &type)
+{
+	system("cls");
+	char choice;
+
+	cout << "Welcome";
+	showItemDetails(fetchLocalItem(type));
+	cout << "Are you sure to remove this item?" << endl;
+	cout << "Y - Delete" << endl;
+	cout << "N - Cancel" << endl;
+	cout << "> "; cin >> choice; cin.ignore();
+	while (choice != 'Y' && choice != 'N' && choice != 'y' && choice != 'n') {
+		cout << "Invalid choice. Try again" << endl;
+		cout << "> "; cin >> choice; cin.ignore();
+	}
+
+	if (choice == 'y' || choice == 'Y') {
+		deleteLocalItem(id, type);
+
+		cout << "Item is removed." << endl;
+		system("pause");
+	}
+
+	system("cls");
+}
+
+void RemoveItemPage(const std::string &name)
+{
+	system("cls");
+	char choice;
+	unordered_map<int, Item> managedItems;
+
+	do {
+		cout << "Welcome" << endl;
+		managedItems = fetchItems(name);
+		showItems(managedItems);
+		cout << "# - Back" << endl;
+		cout << "> "; cin >> choice; cin.ignore();
+		while (choice != '#' && isdigit(choice) && managedItems.find(choice - '0') == managedItems.end()) {
+			cout << "Invalid Item ID. Try again" << endl;
+			cout << "> "; cin >> choice; cin.ignore();
+		}
+
+		if (choice != '#') {
+			ItemRemoveProcessPage(choice, managedItems.at(choice - '0').getType());
+		}
+	} while (choice != '#');
+	system("cls");
+}
+
 void InventoryPage(const std::string &name)
 {
 	system("cls");
@@ -482,7 +568,7 @@ void InventoryPage(const std::string &name)
 				//SearchItemPage(name);
 				break;
 			case '4':
-				//RemoveItemPage(name);
+				RemoveItemPage(name);
 				break;
 			}
 		}

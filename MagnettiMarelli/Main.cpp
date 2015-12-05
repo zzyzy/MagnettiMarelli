@@ -1,107 +1,149 @@
 #include <iostream>
 #include <string>
+#include <unordered_map>
+
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <Utils.h>
 
-using std::string;
-using std::getline;
-using std::cout;
-using std::cin;
-using std::cerr;
-using std::endl;
+using namespace std;
 
-int main()
+SQLite::Database db("database/MagnettiMarelli.db", SQLITE_OPEN_READWRITE);
+
+const int MAX_TRIES = 3;
+
+bool findOIC(const std::string &name)
 {
-	SQLite::Database db("database/MagnettiMarelli.db", SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
-	string OICId;
-	string OICPassword;
-	int tries = 0;
-	bool loggedIn = false;
-	bool locked = false;
+	SQLite::Statement stmt(db, "SELECT * FROM OIC WHERE Name=?");
+	stmt.bind(1, name);
+	stmt.executeStep();
+	return stmt.isOk();
+}
 
-	SQLite::Statement OICIdQuery(db, "SELECT * FROM OIC WHERE Name=?");
-	cout << "Enter OIC ID: ";
-	getline(cin, OICId);
-	OICIdQuery.bind(1, OICId.c_str());
-	OICIdQuery.executeStep();
-	while (!OICIdQuery.isOk()) {
-		cout << "Invalid OIC Id" << endl;
-		cout << "Enter OIC ID: ";
-		getline(cin, OICId);
-		OICIdQuery.clearBindings();
-		OICIdQuery.reset();
-		OICIdQuery.bind(1, OICId.c_str());
-		OICIdQuery.executeStep();
+bool findOIC(const std::string &name, const std::string &password)
+{
+	SQLite::Statement stmt(db, "SELECT * FROM OIC WHERE Name=? AND Password=?");
+	stmt.bind(1, name);
+	stmt.bind(2, Utils::caesar(password).c_str());
+	stmt.executeStep();
+	return stmt.isOk();
+}
+
+bool isLocked(const std::string &name)
+{
+	SQLite::Statement stmt(db, "SELECT Locked FROM OIC WHERE Name=?");
+	stmt.bind(1, name);
+	stmt.executeStep();
+	if (stmt.isOk()) {
+		return stmt.getColumn("Locked").getInt() == 1;
 	}
-	if (OICIdQuery.isOk()) {
-		// Check whether the OIC account is locked or not
-		locked = OICIdQuery.getColumn("Locked").getInt() == 1;
+	else {
+		return false;
+	}
+}
 
-		if (locked) {
-			cout << "Your OIC account is locked!" << endl;
-			cout << "Contact the administrator in charge to resolve this issue." << endl;
-			cout << "Press any key to continue . . . ";
-			cin.get();
-			return 1;
+void lockOIC(const std::string &name)
+{
+	SQLite::Statement stmt(db, "UPDATE OIC SET Locked=1 WHERE Name=?");
+	stmt.bind(1, name);
+	stmt.exec();
+}
+
+void OICPage(const std::string &name)
+{
+	system("cls");
+	char choice;
+
+	do {
+		cout << "Welcome" << endl;
+		cout << "1 - Manage Team" << endl;
+		cout << "2 - Manage Inventory" << endl;
+		cout << "# - Back" << endl;
+		cout << "> "; cin >> choice; cin.ignore();
+		while (choice != '1' && choice != '2' && choice != '#') {
+			cout << "Invalid choice. Try again" << endl;
+			cout << "> "; cin >> choice; cin.ignore();
 		}
-	}
 
-	SQLite::Statement OICCredQuery(db, "SELECT * FROM OIC WHERE Name=? AND Password=?");
-	cout << "Enter OIC Password: ";
-	getline(cin, OICPassword);
-	OICCredQuery.bind(1, OICId.c_str());
-	OICCredQuery.bind(2, Utils::caesar(OICPassword).c_str());
-	OICCredQuery.executeStep();
-	++tries;
-	while (!OICCredQuery.isOk() && tries < 3) {
-		cout << "Invalid OIC Password" << endl;
-		cout << "Enter OIC Password: ";
-		getline(cin, OICPassword);
-		OICCredQuery.clearBindings();
-		OICCredQuery.reset();
-		OICCredQuery.bind(1, OICId.c_str());
-		OICCredQuery.bind(2, Utils::caesar(OICPassword).c_str());
-		OICCredQuery.executeStep();
-		++tries;
-	}
-	if (OICCredQuery.isOk()) {
-		// Check whether the OIC account is locked or not
-		locked = OICCredQuery.getColumn("Locked").getInt() == 1;
+		if (choice != '#') {
+			switch (choice) {
+			case '1':
+				//TeamPage(name);
+				break;
+			case '2':
+				//InventoryPage(name);
+				break;
+			}
+		}
 
-		if (!locked) {
-			cout << "Welcome!" << endl;
-			loggedIn = true;
+	} while (choice != '#');
+	system("cls");
+}
+
+void verifyOICPassword(const std::string &name, unordered_map<string, int> &tries)
+{
+	std::string password;
+
+	if (tries[name] < MAX_TRIES) {
+		cout << "Enter OIC password: ";
+		getline(cin, password);
+		++tries[name];
+		if (findOIC(name, password)) {
+			tries[name] = 0;
+			OICPage(name);
 		}
 		else {
-			cout << "Your OIC account is locked!" << endl;
-			cout << "Contact the administrator in charge to resolve this issue." << endl;
+			cout << "Unable to authenticate OIC account" << endl;
 		}
 	}
 	else {
-		if (!locked) {
-			cout << "You have failed to login for 3 times." << endl;
-			cout << "As such, your account is locked." << endl;
-			cout << "Contact the administrator in charge to resolve this issue." << endl;
+		lockOIC(name);
+		cout << "OIC account has been locked" << endl;
+	}
+}
 
-			// Lock the account
-			SQLite::Transaction lockTransaction(db);
-			SQLite::Statement lockQuery(db, "UPDATE OIC SET Locked=1 WHERE Name=?");
-			lockQuery.bind(1, OICId.c_str());
-			lockQuery.exec();
-			lockTransaction.commit();
-			locked = true;
+void verifyOICName(unordered_map<string, int> &tries)
+{
+	std::string name;
+
+	cout << "Enter OIC name: ";
+	getline(cin, name);
+	if (findOIC(name)) {
+		if (!isLocked(name)) {
+			verifyOICPassword(name, tries);
 		}
 		else {
-			cout << "Your OIC account is locked!" << endl;
-			cout << "Contact the administrator in charge to resolve this issue." << endl;
+			cout << "OIC account is locked" << endl;
 		}
 	}
-
-	if (loggedIn) {
-
+	else {
+		cout << "OIC account not found" << endl;
 	}
-	
-	cout << "Press any key to continue . . . ";
-	cin.get();
+}
+
+void MainPage()
+{
+	system("cls");
+	char choice;
+	unordered_map<string, int> tries;
+
+	do {
+		cout << "1 - Login" << endl;
+		cout << "2 - Quit" << endl;
+		cout << "> "; cin >> choice; cin.ignore();
+		while (choice != '1' && choice != '2') {
+			cout << "Invalid choice. Try again." << endl;
+			cout << "> "; cin >> choice; cin.ignore();
+		}
+
+		if (choice == '1') {
+			verifyOICName(tries);
+		}
+	} while (choice != '2');
+	system("cls");
+}
+
+int main()
+{
+	MainPage();
 	return 0;
 }

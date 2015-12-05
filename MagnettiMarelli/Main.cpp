@@ -488,6 +488,36 @@ void UpdateStockPage(const std::string &name)
 	system("cls");
 }
 
+void ItemDetailsPage(const std::string &type)
+{
+	system("cls");
+	cout << "Welcome" << endl;
+	if (isItemExist(type)) {
+		showItemDetails(fetchLocalItem(type));
+	}
+	else {
+		cout << "The item does not exist in the inventory." << endl;
+	}
+	system("pause");
+	system("cls");
+}
+
+void SearchItemPage(const std::string &name)
+{
+	system("cls");
+	std::string type;
+
+	do {
+		cout << "Welcome" << endl;
+		cout << "Item type (# to back)" << endl;
+		cout << "> "; getline(cin, type);
+		if (type != "#") {
+			ItemDetailsPage(type);
+		}
+	} while (type != "#");
+	system("cls");
+}
+
 void ItemRemoveProcessPage(const char &id, const std::string &type)
 {
 	system("cls");
@@ -565,7 +595,7 @@ void InventoryPage(const std::string &name)
 				UpdateStockPage(name);
 				break;
 			case '3':
-				//SearchItemPage(name);
+				SearchItemPage(name);
 				break;
 			case '4':
 				RemoveItemPage(name);

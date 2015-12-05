@@ -3,10 +3,10 @@
 #include <unordered_map>
 
 #include <SQLiteCpp/SQLiteCpp.h>
+#include <OICService.h>
 #include <ItemService.h>
 #include <Team.h>
 #include <RequestService.h>
-#include <Utils.h>
 
 using namespace std;
 
@@ -19,13 +19,18 @@ SQLite::Database db("MagnettiMarelli.db", SQLITE_OPEN_READWRITE);
 const int MAX_TRIES = 3;
 const int WORKING_DAYS = 7;
 
+OICDAO oicDao(db);
 ItemDAO itemDao(db);
 RequestDAO requestDao(db);
+OICService oicService(oicDao);
 ItemService itemService(itemDao);
 RequestService requestService(requestDao);
 
 void initInMemoryDb()
 {
+	cout << "Loading OIC table. . ." << endl;
+	oicDao.loadTable();
+	cout << "Loading OIC table. . . done!" << endl;
 	cout << "Loading Item table. . ." << endl;
 	itemDao.loadTable();
 	cout << "Loading Item table. . . done!" << endl;
@@ -36,6 +41,9 @@ void initInMemoryDb()
 
 void commitInMemoryDb()
 {
+	cout << "Saving OIC table. . ." << endl;
+	oicDao.saveTable();
+	cout << "Saving OIC table. . . done!" << endl;
 	cout << "Saving Item table. . ." << endl;
 	itemDao.saveTable();
 	cout << "Saving Item table. . . done!" << endl;
@@ -73,43 +81,6 @@ void showItemDetails(const Item& item)
 	cout << "Item type - " << item.getType() << endl;
 	cout << "Quantity - " << item.getQuantity() << endl;
 	cout << "In charge by - " << item.getOic() << endl;
-}
-
-bool findOIC(const std::string &name)
-{
-	SQLite::Statement stmt(db, "SELECT * FROM OIC WHERE Name=?");
-	stmt.bind(1, name);
-	stmt.executeStep();
-	return stmt.isOk();
-}
-
-bool findOIC(const std::string &name, const std::string &password)
-{
-	SQLite::Statement stmt(db, "SELECT * FROM OIC WHERE Name=? AND Password=?");
-	stmt.bind(1, name);
-	stmt.bind(2, Utils::caesar(password).c_str());
-	stmt.executeStep();
-	return stmt.isOk();
-}
-
-bool isLocked(const std::string &name)
-{
-	SQLite::Statement stmt(db, "SELECT Locked FROM OIC WHERE Name=?");
-	stmt.bind(1, name);
-	stmt.executeStep();
-	if (stmt.isOk()) {
-		return stmt.getColumn("Locked").getInt() == 1;
-	}
-	else {
-		return false;
-	}
-}
-
-void lockOIC(const std::string &name)
-{
-	SQLite::Statement stmt(db, "UPDATE OIC SET Locked=1 WHERE Name=?");
-	stmt.bind(1, name);
-	stmt.exec();
 }
 
 unordered_map<int, string> fetchTeams(const std::string &name)
@@ -427,51 +398,31 @@ void OICPage(const std::string &oic)
 	system("cls");
 }
 
-void verifyOICPassword(const std::string &name, unordered_map<string, int> &tries)
-{
-	std::string password;
-
-	if (tries[name] < MAX_TRIES) {
-		cout << "Enter OIC password: ";
-		getline(cin, password);
-		++tries[name];
-		if (findOIC(name, password)) {
-			tries[name] = 0;
-			OICPage(name);
-		}
-		else {
-			cout << "Unable to authenticate OIC account" << endl;
-		}
-	}
-	else {
-		lockOIC(name);
-		cout << "OIC account has been locked" << endl;
-	}
-}
-
-void verifyOICName(unordered_map<string, int> &tries)
+void OICLogin()
 {
 	std::string name;
+	std::string password;
 
 	cout << "Enter OIC name: ";
 	getline(cin, name);
-	if (findOIC(name)) {
-		if (!isLocked(name)) {
-			verifyOICPassword(name, tries);
+	if (oicService.verifyUsername(name)) {
+		cout << "Enter OIC password: ";
+		getline(cin, password);
+		if (oicService.verifyPassword(name, password, 3)) {
+			OICPage(name);
 		}
 		else {
-			cout << "OIC account is locked" << endl;
+			cout << oicService.getLoginError() << endl;
 		}
 	}
 	else {
-		cout << "OIC account not found" << endl;
+		cout << oicService.getLoginError() << endl;
 	}
 }
 
 void MainPage()
 {
 	char choice;
-	unordered_map<string, int> tries;
 
 	initInMemoryDb();
 	system("cls");
@@ -485,7 +436,7 @@ void MainPage()
 		}
 
 		if (choice == '1') {
-			verifyOICName(tries);
+			OICLogin();
 		}
 	} while (choice != '2');
 	system("cls");

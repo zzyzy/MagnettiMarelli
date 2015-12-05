@@ -4,7 +4,6 @@
 
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <Item.h>
-#include <ItemException.h>
 #include <Request.h>
 #include <Utils.h>
 

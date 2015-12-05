@@ -1,6 +1,6 @@
 #include <Utils.h>
 
-std::string Utils::caesar(std::string input)
+std::string Utils::caesar(const std::string &input)
 {
 	std::string temp;
 

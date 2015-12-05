@@ -143,7 +143,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Item.h" />
-    <ClInclude Include="ItemException.h" />
     <ClInclude Include="OIC.h" />
     <ClInclude Include="Request.h" />
     <ClInclude Include="SimpleDate.h" />

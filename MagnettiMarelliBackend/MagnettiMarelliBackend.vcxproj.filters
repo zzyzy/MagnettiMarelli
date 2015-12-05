@@ -60,9 +60,6 @@
     <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ItemException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OIC.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -17,6 +17,7 @@ public:
 	void setOic(const std::string &oic);
 
 	bool deductQuantity(const int &quantity);
+	void addQuantity(const int &quantity);
 
 	struct Hasher {
 		size_t operator()(const Item &item) const;

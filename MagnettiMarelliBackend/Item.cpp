@@ -1,4 +1,4 @@
-#include "Item.h"
+#include <Item.h>
 
 std::string Item::getType() const
 {
@@ -12,7 +12,7 @@ int Item::getQuantity() const
 
 std::string Item::getOic() const
 {
-	return oic;	
+	return oic;
 }
 
 void Item::setType(const std::string &type)
@@ -39,6 +39,11 @@ bool Item::deductQuantity(const int &quantity)
 	else {
 		return false;
 	}
+}
+
+void Item::addQuantity(const int &quantity)
+{
+	this->quantity += quantity;
 }
 
 size_t Item::Hasher::operator()(const Item &item) const

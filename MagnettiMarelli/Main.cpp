@@ -15,6 +15,7 @@ SQLite::Database db("database/MagnettiMarelli.db", SQLITE_OPEN_READWRITE);
 const int MAX_TRIES = 3;
 
 unordered_map<std::string, Item> itemTable;
+unordered_map<std::string, Item> addItemTable;
 unordered_map<int, Request> requestTable;
 
 void loadItemTable()
@@ -38,10 +39,25 @@ void saveItem(const Item &item)
 	stmt.exec();
 }
 
+void addItem(const Item &item)
+{
+	SQLite::Statement stmt(db, "INSERT INTO Item (Type, Quantity, OIC) VALUES (?, ?, ?)");
+	stmt.bind(1, item.getType());
+	stmt.bind(2, item.getQuantity());
+	stmt.bind(3, item.getOic());
+	stmt.exec();
+}
+
 void saveItemTable()
 {
 	for (pair<std::string, Item> p : itemTable) {
 		saveItem(p.second);
+	}
+	
+	if (!addItemTable.empty()) {
+		for (pair<std::string, Item> p : addItemTable) {
+			addItem(p.second);
+		}
 	}
 }
 
@@ -58,7 +74,6 @@ void loadRequestTable()
 		request.setTeam(stmt.getColumn("Team").getText());
 		request.setItem(stmt.getColumn("Item").getText());
 		request.setOic(stmt.getColumn("OIC").getText());
-		//requestTable.insert(request);
 		requestTable.insert({ request.getId(), request });
 	}
 }
@@ -142,7 +157,6 @@ unordered_map<int, string> fetchTeams(const std::string &name)
 	stmt.bind(1, name);
 	while (stmt.executeStep()) {
 		managedTeams.insert({ ++i, stmt.getColumn("Name").getText() });
-		//cout << stmt.getColumn("ID").getInt() << " - " << stmt.getColumn("Name").getText() << endl;
 	}
 	return managedTeams;
 }
@@ -264,7 +278,74 @@ unordered_map<int, Item> fetchItems(const std::string &name)
 		}
 	}
 
+	if (!addItemTable.empty()) {
+		for (pair<string, Item> p : addItemTable) {
+			if (p.second.getOic() == name) {
+				items.insert({ ++i, p.second });
+			}
+		}
+	}
+
 	return items;
+}
+
+Item fetchLocalItem(const std::string &type)
+{
+	Item item;
+
+	for (pair<string, Item> p : itemTable) {
+		if (p.second.getType() == type) {
+			item.setOic(p.second.getOic());
+			item.setQuantity(p.second.getQuantity());
+			item.setType(p.second.getType());
+			break;
+		}
+	}
+
+	if (!addItemTable.empty()) {
+		for (pair<string, Item> p : addItemTable) {
+			if (p.second.getType() == type) {
+				item.setOic(p.second.getOic());
+				item.setQuantity(p.second.getQuantity());
+				item.setType(p.second.getType());
+				break;
+			}
+		}
+	}
+
+	return item;
+}
+
+bool isItemExist(const std::string &type)
+{
+	for (pair<string, Item> p : itemTable) {
+		if (p.second.getType() == type) {
+			return true;
+		}
+	}
+
+	if (!addItemTable.empty()) {
+		for (pair<string, Item> p : addItemTable) {
+			if (p.second.getType() == type) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool isItemNew(const std::string &type)
+{
+	if (!addItemTable.empty()) {
+		for (pair<string, Item> p : addItemTable) {
+			if (p.second.getType() == type) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void showItems(const unordered_map<int, Item> &managedItems)
@@ -276,6 +357,51 @@ void showItems(const unordered_map<int, Item> &managedItems)
 
 void updateStock(Item &item, const int &quantity) {
 	item.setQuantity(item.getQuantity() + quantity);
+}
+
+void addLocalItem(const std::string &type, const int &quantity, const std::string &name)
+{
+	Item item;
+	item.setType(type);
+	item.setQuantity(quantity);
+	item.setOic(name);
+	addItemTable.insert({ item.getType(), item });
+}
+
+void AddItemPage(const std::string &name)
+{
+	system("cls");
+	std::string type;
+	int quantity;
+
+	cout << "Welcome" << endl;
+	cout << "New item type (# to cancel)" << endl;
+	cout << "> "; getline(cin, type);
+	if (type != "#") {
+		if (isItemExist(type)) {
+			Item item = fetchLocalItem(type);
+			cout << endl << "Item already exists in inventory" << endl;
+			cout << "Stock level - " << item.getQuantity() << endl;
+			cout << "In charge by - " << item.getOic() << endl;
+			cout << "Contact the officer in charge for any enquiry" << endl;
+		}
+		else {
+			cout << "New item quantity (-1 to cancel)" << endl;
+			cout << "> "; cin >> quantity; cin.ignore();
+			while (quantity != -1 && quantity <= 0) {
+				cout << "Invalid quantity. Try again" << endl;
+				cout << "> "; cin >> quantity; cin.ignore();
+			}
+
+			if (quantity != -1) {
+				addLocalItem(type, quantity, name);
+
+				cout << "New item is added." << endl;
+				system("pause");
+			}
+		}
+	}
+	system("cls");
 }
 
 void StockUpdateProcessPage(Item &item)
@@ -347,7 +473,7 @@ void InventoryPage(const std::string &name)
 		if (choice != '#') {
 			switch (choice) {
 			case '1':
-				//AddItemPage(name);
+				AddItemPage(name);
 				break;
 			case '2':
 				UpdateStockPage(name);

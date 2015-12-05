@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DAO.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="OIC.h" />
     <ClInclude Include="Request.h" />

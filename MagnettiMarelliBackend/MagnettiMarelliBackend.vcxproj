@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="DAO.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemDAO.h" />
     <ClInclude Include="OIC.h" />
     <ClInclude Include="Request.h" />
     <ClInclude Include="SimpleDate.h" />
@@ -161,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemDAO.cpp" />
     <ClCompile Include="OIC.cpp" />
     <ClCompile Include="Request.cpp" />
     <ClCompile Include="SimpleDate.cpp" />

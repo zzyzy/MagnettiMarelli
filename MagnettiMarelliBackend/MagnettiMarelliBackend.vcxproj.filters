@@ -75,6 +75,9 @@
     <ClInclude Include="DAO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ItemDAO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SQLiteCpp\Column.cpp">
@@ -108,6 +111,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Team.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemDAO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

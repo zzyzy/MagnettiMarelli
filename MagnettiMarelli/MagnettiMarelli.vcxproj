@@ -19,27 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\sqlite3\sqlite3.h" />
-    <ClInclude Include="include\sqlite3\sqlite3ext.h" />
-    <ClInclude Include="include\SQLiteCpp\Assertion.h" />
-    <ClInclude Include="include\SQLiteCpp\Column.h" />
-    <ClInclude Include="include\SQLiteCpp\Database.h" />
-    <ClInclude Include="include\SQLiteCpp\Exception.h" />
-    <ClInclude Include="include\SQLiteCpp\SQLiteCpp.h" />
-    <ClInclude Include="include\SQLiteCpp\Statement.h" />
-    <ClInclude Include="include\SQLiteCpp\Transaction.h" />
-    <ClInclude Include="include\Team.h" />
-    <ClInclude Include="include\Utils.h" />
+    <ClInclude Include="sqlite3\sqlite3.h" />
+    <ClInclude Include="sqlite3\sqlite3ext.h" />
+    <ClInclude Include="SQLiteCpp\Assertion.h" />
+    <ClInclude Include="SQLiteCpp\Column.h" />
+    <ClInclude Include="SQLiteCpp\Database.h" />
+    <ClInclude Include="SQLiteCpp\Exception.h" />
+    <ClInclude Include="SQLiteCpp\SQLiteCpp.h" />
+    <ClInclude Include="SQLiteCpp\Statement.h" />
+    <ClInclude Include="SQLiteCpp\Transaction.h" />
+    <ClInclude Include="Team.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\sqlite3\sqlite3.c" />
-    <ClCompile Include="src\SQLiteCpp\Column.cpp" />
-    <ClCompile Include="src\SQLiteCpp\Database.cpp" />
-    <ClCompile Include="src\SQLiteCpp\Statement.cpp" />
-    <ClCompile Include="src\SQLiteCpp\Transaction.cpp" />
-    <ClCompile Include="src\Team.cpp" />
-    <ClCompile Include="src\Utils.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="sqlite3\sqlite3.c" />
+    <ClCompile Include="SQLiteCpp\Column.cpp" />
+    <ClCompile Include="SQLiteCpp\Database.cpp" />
+    <ClCompile Include="SQLiteCpp\Statement.cpp" />
+    <ClCompile Include="SQLiteCpp\Transaction.cpp" />
+    <ClCompile Include="Team.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E1B811C6-BE8C-41AC-A7EC-92B2510D085E}</ProjectGuid>
@@ -92,10 +92,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)sqlite3;$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)sqlite3;$(ProjectDir);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)sqlite3;$(ProjectDir);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)sqlite3;$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

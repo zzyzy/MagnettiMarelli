@@ -10,7 +10,7 @@
  */
 #pragma once
 
-#include <sqlite3/sqlite3.h>
+#include <sqlite3.h>
 #include <string>
 #include <map>
 

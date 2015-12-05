@@ -147,6 +147,8 @@
     <ClInclude Include="ItemDAO.h" />
     <ClInclude Include="ItemService.h" />
     <ClInclude Include="OIC.h" />
+    <ClInclude Include="OICDAO.h" />
+    <ClInclude Include="OICService.h" />
     <ClInclude Include="Request.h" />
     <ClInclude Include="RequestDAO.h" />
     <ClInclude Include="RequestService.h" />
@@ -168,6 +170,8 @@
     <ClCompile Include="ItemDAO.cpp" />
     <ClCompile Include="ItemService.cpp" />
     <ClCompile Include="OIC.cpp" />
+    <ClCompile Include="OICDAO.cpp" />
+    <ClCompile Include="OICService.cpp" />
     <ClCompile Include="Request.cpp" />
     <ClCompile Include="RequestDAO.cpp" />
     <ClCompile Include="RequestService.cpp" />

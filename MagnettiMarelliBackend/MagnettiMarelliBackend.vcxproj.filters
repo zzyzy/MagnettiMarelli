@@ -87,6 +87,12 @@
     <ClInclude Include="RequestService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OICDAO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OICService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SQLiteCpp\Column.cpp">
@@ -132,6 +138,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RequestService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OICDAO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OICService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

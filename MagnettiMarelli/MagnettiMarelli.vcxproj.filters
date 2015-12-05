@@ -60,6 +60,18 @@
     <ClInclude Include="sqlite3\sqlite3ext.h">
       <Filter>Header Files\sqlite3</Filter>
     </ClInclude>
+    <ClInclude Include="OIC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Request.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -85,6 +97,15 @@
     </ClCompile>
     <ClCompile Include="sqlite3\sqlite3.c">
       <Filter>Source Files\sqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="OIC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Request.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

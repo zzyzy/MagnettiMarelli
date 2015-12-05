@@ -253,7 +253,7 @@ void TeamRequestPage(const string &name)
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 
-		if (choice != '#') {
+		if (choice != '#' && isdigit(choice)) {
 			RequestProcessPage(requestTable.at(requests.at(choice - '0').getId()));
 		}
 	} while (choice != '#');
@@ -277,7 +277,7 @@ void TeamPage(const std::string &name)
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 
-		if (choice != '#') {
+		if (choice != '#' && isdigit(choice)) {
 			TeamRequestPage(managedTeams.at(choice - '0'));
 		}
 	} while (choice != '#');
@@ -484,7 +484,7 @@ void UpdateStockPage(const std::string &name)
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 
-		if (choice != '#') {
+		if (choice != '#' && isdigit(choice)) {
 			StockUpdateProcessPage(itemTable.at(managedItems.at(choice - '0').getType()));
 		}
 	} while (choice != '#');
@@ -564,7 +564,7 @@ void RemoveItemPage(const std::string &name)
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 
-		if (choice != '#') {
+		if (choice != '#' && isdigit(choice)) {
 			ItemRemoveProcessPage(choice, managedItems.at(choice - '0').getType());
 		}
 	} while (choice != '#');

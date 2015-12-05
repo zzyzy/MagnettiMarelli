@@ -48,6 +48,50 @@ void lockOIC(const std::string &name)
 	stmt.exec();
 }
 
+unordered_map<int, string> fetchTeams(const std::string &name)
+{
+	int i = 0;
+	unordered_map<int, string> managedTeams;
+	SQLite::Statement stmt(db, "SELECT * FROM Team WHERE OIC=?");
+	stmt.bind(1, name);
+	while (stmt.executeStep()) {
+		managedTeams.insert({ ++i, stmt.getColumn("Name").getText() });
+		//cout << stmt.getColumn("ID").getInt() << " - " << stmt.getColumn("Name").getText() << endl;
+	}
+	return managedTeams;
+}
+
+void showTeams(const unordered_map<int, string> &managedTeams)
+{
+	for (pair<int, string> p : managedTeams) {
+		cout << p.first << " - " << p.second << endl;
+	}
+}
+
+void TeamPage(const std::string &name)
+{
+	system("cls");
+	char choice;
+	unordered_map<int, string> managedTeams;
+
+	cout << "Welcome" << endl;
+	do {
+		managedTeams = fetchTeams(name);
+		showTeams(managedTeams);
+		cout << "# - Back" << endl;
+		cout << "> "; cin >> choice; cin.ignore();
+		while (choice != '#' && isdigit(choice) && managedTeams.find(choice - '0') == managedTeams.end()) {
+			cout << "Invalid Team ID. Try again" << endl;
+			cout << "> "; cin >> choice; cin.ignore();
+		}
+
+		if (choice != '#') {
+			//TeamRequestPage(managedTeams.at(choice - '0'));
+		}
+	} while (choice != '#');
+	system("cls");
+}
+
 void OICPage(const std::string &name)
 {
 	system("cls");
@@ -67,7 +111,7 @@ void OICPage(const std::string &name)
 		if (choice != '#') {
 			switch (choice) {
 			case '1':
-				//TeamPage(name);
+				TeamPage(name);
 				break;
 			case '2':
 				//InventoryPage(name);

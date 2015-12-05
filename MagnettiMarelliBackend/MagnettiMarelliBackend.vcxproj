@@ -148,6 +148,8 @@
     <ClInclude Include="ItemService.h" />
     <ClInclude Include="OIC.h" />
     <ClInclude Include="Request.h" />
+    <ClInclude Include="RequestDAO.h" />
+    <ClInclude Include="RequestService.h" />
     <ClInclude Include="SimpleDate.h" />
     <ClInclude Include="sqlite3\sqlite3.h" />
     <ClInclude Include="sqlite3\sqlite3ext.h" />
@@ -167,6 +169,8 @@
     <ClCompile Include="ItemService.cpp" />
     <ClCompile Include="OIC.cpp" />
     <ClCompile Include="Request.cpp" />
+    <ClCompile Include="RequestDAO.cpp" />
+    <ClCompile Include="RequestService.cpp" />
     <ClCompile Include="SimpleDate.cpp" />
     <ClCompile Include="sqlite3\sqlite3.c" />
     <ClCompile Include="SQLiteCpp\Column.cpp" />

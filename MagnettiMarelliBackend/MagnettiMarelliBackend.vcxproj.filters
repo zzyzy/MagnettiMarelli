@@ -81,6 +81,12 @@
     <ClInclude Include="ItemService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RequestDAO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SQLiteCpp\Column.cpp">
@@ -120,6 +126,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ItemService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestDAO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

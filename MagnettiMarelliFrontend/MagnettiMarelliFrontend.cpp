@@ -10,7 +10,11 @@
 
 using namespace std;
 
-SQLite::Database db("database/MagnettiMarelli.db", SQLITE_OPEN_READWRITE);
+#ifdef _DEBUG
+SQLite::Database db(MAGNETTIDB, SQLITE_OPEN_READWRITE);
+#else
+SQLite::Database db("MagnettiMarelli.db", SQLITE_OPEN_READWRITE);
+#endif
 
 const int MAX_TRIES = 3;
 

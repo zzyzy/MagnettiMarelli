@@ -14,24 +14,21 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\sqlite3">
-      <UniqueIdentifier>{e8ceacd8-fa79-4808-846c-a87e3fc9bf18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\sqlite3">
-      <UniqueIdentifier>{72685bc0-ad5c-4f03-a857-9ef8567076e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SQLiteCpp">
-      <UniqueIdentifier>{e6243d62-70ef-47f9-83d6-ab7df4345318}</UniqueIdentifier>
+      <UniqueIdentifier>{ab8d017f-c24b-4801-bef8-4d45b5d5e1f3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\SQLiteCpp">
-      <UniqueIdentifier>{f2521f58-e4a8-4897-ab8d-54d6c55f98ed}</UniqueIdentifier>
+      <UniqueIdentifier>{e870a2bf-a7e9-476a-a87b-c14c580fecb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sqlite3">
+      <UniqueIdentifier>{1bc893dd-ca87-4aa8-850c-7209d0389bb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SQLiteCpp">
+      <UniqueIdentifier>{4de41d5f-cafe-4c15-ac9a-56b09c382776}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Team.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="SQLiteCpp\Transaction.h">
+      <Filter>Header Files\SQLiteCpp</Filter>
     </ClInclude>
     <ClInclude Include="SQLiteCpp\Assertion.h">
       <Filter>Header Files\SQLiteCpp</Filter>
@@ -51,16 +48,13 @@
     <ClInclude Include="SQLiteCpp\Statement.h">
       <Filter>Header Files\SQLiteCpp</Filter>
     </ClInclude>
-    <ClInclude Include="SQLiteCpp\Transaction.h">
-      <Filter>Header Files\SQLiteCpp</Filter>
-    </ClInclude>
     <ClInclude Include="sqlite3\sqlite3.h">
       <Filter>Header Files\sqlite3</Filter>
     </ClInclude>
     <ClInclude Include="sqlite3\sqlite3ext.h">
       <Filter>Header Files\sqlite3</Filter>
     </ClInclude>
-    <ClInclude Include="OIC.h">
+    <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
@@ -69,23 +63,20 @@
     <ClInclude Include="ItemException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OIC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Request.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SimpleDate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Team.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Team.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SQLiteCpp\Column.cpp">
       <Filter>Source Files\SQLiteCpp</Filter>
     </ClCompile>
@@ -101,16 +92,22 @@
     <ClCompile Include="sqlite3\sqlite3.c">
       <Filter>Source Files\sqlite3</Filter>
     </ClCompile>
-    <ClCompile Include="OIC.cpp">
+    <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OIC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Request.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimpleDate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Team.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

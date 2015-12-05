@@ -3,10 +3,9 @@
 #include <unordered_map>
 
 #include <SQLiteCpp/SQLiteCpp.h>
-#include <SimpleDate.h>
 #include <ItemService.h>
 #include <Team.h>
-#include <Request.h>
+#include <RequestService.h>
 #include <Utils.h>
 
 using namespace std;
@@ -21,55 +20,18 @@ const int MAX_TRIES = 3;
 const int WORKING_DAYS = 7;
 
 ItemDAO itemDao(db);
+RequestDAO requestDao(db);
 ItemService itemService(itemDao);
-
-unordered_map<int, Request> requestTable;
-
-void loadRequestTable()
-{
-	SQLite::Statement stmt(db, "SELECT * FROM Request");
-	while (stmt.executeStep()) {
-		Request request;
-		request.setId(stmt.getColumn("ID").getInt());
-		request.setQuantity(stmt.getColumn("Quantity").getInt());
-		request.setRequestDate(stmt.getColumn("Request Date").getText());
-		request.setDeliveryDate(stmt.getColumn("Delivery Date").getText());
-		request.setStatus(stmt.getColumn("Status").getText());
-		request.setTeam(stmt.getColumn("Team").getText());
-		request.setItem(stmt.getColumn("Item").getText());
-		request.setOic(stmt.getColumn("OIC").getText());
-		requestTable.insert({ request.getId(), request });
-	}
-}
-
-void saveRequest(const Request &request)
-{
-	SQLite::Statement stmt(db, "UPDATE Request SET Quantity=?, \"Request Date\"=?, \
-		\"Delivery Date\"=?, Status=?, Team=?, Item=?, OIC=? WHERE ID=?");
-	stmt.bind(1, request.getQuantity());
-	stmt.bind(2, request.getRequestDate());
-	stmt.bind(3, request.getDeliveryDate());
-	stmt.bind(4, request.getStatus());
-	stmt.bind(5, request.getTeam());
-	stmt.bind(6, request.getItem());
-	stmt.bind(7, request.getOic());
-	stmt.bind(8, request.getId());
-	stmt.exec();
-}
-
-void saveRequestTable()
-{
-	for (pair<int, Request> p : requestTable) {
-		saveRequest(p.second);
-	}
-}
+RequestService requestService(requestDao);
 
 void initInMemoryDb()
 {
 	cout << "Loading Item table. . ." << endl;
 	itemDao.loadTable();
 	cout << "Loading Item table. . . done!" << endl;
-	loadRequestTable();
+	cout << "Loading Request table. . ." << endl;
+	requestDao.loadTable();
+	cout << "Loading Request table. . . done!" << endl;
 }
 
 void commitInMemoryDb()
@@ -77,7 +39,9 @@ void commitInMemoryDb()
 	cout << "Saving Item table. . ." << endl;
 	itemDao.saveTable();
 	cout << "Saving Item table. . . done!" << endl;
-	saveRequestTable();
+	cout << "Saving Request table" << endl;
+	requestDao.saveTable();
+	cout << "Saving Request table. . . done!" << endl;
 }
 
 void showTeams(const unordered_map<int, std::string> &teams)
@@ -160,33 +124,7 @@ unordered_map<int, string> fetchTeams(const std::string &name)
 	return managedTeams;
 }
 
-unordered_map<int, Request> fetchRequests(const std::string &team, const std::string &status)
-{
-	int i = 0;
-	unordered_map<int, Request> requests;
-	for (pair<int, Request> p : requestTable) {
-		if (p.second.getTeam() == team && p.second.getStatus() == status) {
-			requests.insert({ ++i, p.second });
-		}
-	}
-	return requests;
-}
-
-void approveRequest(Request &request)
-{
-	if (itemService.requestItem(request)) {
-		SimpleDate deliveryDate;
-		deliveryDate.now();
-		deliveryDate.addDay(WORKING_DAYS);
-		request.setDeliveryDate(deliveryDate.toString());
-		request.setStatus(Request::APPROVED);
-	}
-	else {
-		cout << "Not enough stock to process request" << endl;
-	}
-}
-
-void RequestProcessPage(Request &request)
+void RequestProcessPage(const Request &request)
 {
 	char choice;
 
@@ -201,20 +139,25 @@ void RequestProcessPage(Request &request)
 	}
 
 	if (choice == 'y' || choice == 'Y') {
-		approveRequest(request);
+		if (requestService.approveRequest(request, itemService, WORKING_DAYS)) {
+			cout << "Request processed successfully!" << endl;
+		}
+		else {
+			cout << "Not enough stock to process request" << endl;
+		}
 	}
 	system("cls");
 }
 
-void TeamRequestPage(const string &name)
+void TeamRequestPage(const std::string &team)
 {
 	char choice;
 	unordered_map<int, Request> requests;
 
 	system("cls");
 	do {
-		cout << name << endl;
-		requests = fetchRequests(name, Request::PENDING);
+		cout << team << endl;
+		requests = requestService.getRequestMap(team, Request::PENDING);
 		showRequests(requests);
 		cout << "# - Back" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
@@ -224,7 +167,7 @@ void TeamRequestPage(const string &name)
 		}
 
 		if (choice != '#' && isdigit(choice)) {
-			RequestProcessPage(requestTable.at(requests.at(choice - '0').getId()));
+			RequestProcessPage(requestService.fetchRequest(requests, choice - '0'));
 		}
 	} while (choice != '#');
 	system("cls");
@@ -233,22 +176,22 @@ void TeamRequestPage(const string &name)
 void TeamPage(const std::string &name)
 {
 	char choice;
-	unordered_map<int, string> managedTeams;
+	unordered_map<int, string> teams;
 
 	system("cls");
 	do {
 		cout << "Team Request Management" << endl;
-		managedTeams = fetchTeams(name);
-		showTeams(managedTeams);
+		teams = fetchTeams(name);
+		showTeams(teams);
 		cout << "# - Back" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
-		while (choice != '#' && isdigit(choice) && managedTeams.find(choice - '0') == managedTeams.end()) {
+		while (choice != '#' && isdigit(choice) && teams.find(choice - '0') == teams.end()) {
 			cout << "Invalid Team ID. Try again" << endl;
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 
 		if (choice != '#' && isdigit(choice)) {
-			TeamRequestPage(managedTeams.at(choice - '0'));
+			TeamRequestPage(teams.at(choice - '0'));
 		}
 	} while (choice != '#');
 	system("cls");

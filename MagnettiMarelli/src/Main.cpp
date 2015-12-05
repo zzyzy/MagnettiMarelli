@@ -10,16 +10,16 @@ using std::cin;
 using std::cerr;
 using std::endl;
 
-int main2()
+int main()
 {
-	SQLite::Database db("database/MMDatabase.db", SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
+	SQLite::Database db("database/MagnettiMarelli.db", SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
 	string OICId;
 	string OICPassword;
 	int tries = 0;
 	bool loggedIn = false;
 	bool locked = false;
 
-	SQLite::Statement OICIdQuery(db, "SELECT * FROM OICCred WHERE ID=?");
+	SQLite::Statement OICIdQuery(db, "SELECT * FROM OIC WHERE Name=?");
 	cout << "Enter OIC ID: ";
 	getline(cin, OICId);
 	OICIdQuery.bind(1, OICId.c_str());
@@ -46,7 +46,7 @@ int main2()
 		}
 	}
 
-	SQLite::Statement OICCredQuery(db, "SELECT * FROM OICCred WHERE ID=? AND Password=?");
+	SQLite::Statement OICCredQuery(db, "SELECT * FROM OIC WHERE Name=? AND Password=?");
 	cout << "Enter OIC Password: ";
 	getline(cin, OICPassword);
 	OICCredQuery.bind(1, OICId.c_str());
@@ -85,7 +85,7 @@ int main2()
 
 			// Lock the account
 			SQLite::Transaction lockTransaction(db);
-			SQLite::Statement lockQuery(db, "UPDATE OICCred SET Locked=1 WHERE ID=?");
+			SQLite::Statement lockQuery(db, "UPDATE OIC SET Locked=1 WHERE Name=?");
 			lockQuery.bind(1, OICId.c_str());
 			lockQuery.exec();
 			lockTransaction.commit();

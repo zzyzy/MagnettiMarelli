@@ -45,14 +45,6 @@ void saveItemTable()
 	}
 }
 
-bool findOIC(const std::string &name)
-{
-	SQLite::Statement stmt(db, "SELECT * FROM OIC WHERE Name=?");
-	stmt.bind(1, name);
-	stmt.executeStep();
-	return stmt.isOk();
-}
-
 void loadRequestTable()
 {
 	SQLite::Statement stmt(db, "SELECT * FROM Request");
@@ -103,6 +95,14 @@ void commitInMemoryDb()
 {
 	saveItemTable();
 	saveRequestTable();
+}
+
+bool findOIC(const std::string &name)
+{
+	SQLite::Statement stmt(db, "SELECT * FROM OIC WHERE Name=?");
+	stmt.bind(1, name);
+	stmt.executeStep();
+	return stmt.isOk();
 }
 
 bool findOIC(const std::string &name, const std::string &password)
@@ -253,6 +253,117 @@ void TeamPage(const std::string &name)
 	system("cls");
 }
 
+unordered_map<int, Item> fetchItems(const std::string &name)
+{
+	int i = 0;
+	unordered_map<int, Item> items;
+
+	for (pair<string, Item> p : itemTable) {
+		if (p.second.getOic() == name) {
+			items.insert({ ++i, p.second });
+		}
+	}
+
+	return items;
+}
+
+void showItems(const unordered_map<int, Item> &managedItems)
+{
+	for (pair<int, Item> p : managedItems) {
+		cout << p.first << " - " << p.second.getType() << " - " << p.second.getQuantity() << " ea" << endl;
+	}
+}
+
+void updateStock(Item &item, const int &quantity) {
+	item.setQuantity(item.getQuantity() + quantity);
+}
+
+void StockUpdateProcessPage(Item &item)
+{
+	system("cls");
+	int quantity;
+
+	cout << "Welcome" << endl;
+	cout << "Item type - " << item.getType() << endl;
+	cout << "Current quantity - " << item.getQuantity() << endl;
+	cout << "New add-in quantity (-1 to cancel)" << endl;
+	cout << "> "; cin >> quantity; cin.ignore();
+	while (quantity != -1 && quantity <= 0) {
+		cout << "Invalid quantity. Try again" << endl;
+		cout << "> "; cin >> quantity; cin.ignore();
+	}
+
+	if (quantity != -1) {
+		updateStock(item, quantity);
+
+		cout << "Quantity of item is updated." << endl;
+		system("pause");
+	}
+	system("cls");
+}
+
+void UpdateStockPage(const std::string &name)
+{
+	system("cls");
+	char choice;
+	unordered_map<int, Item> managedItems;
+
+	do {
+		cout << "Welcome" << endl;
+		managedItems = fetchItems(name);
+		showItems(managedItems);
+		cout << "# - Back" << endl;
+		cout << "> "; cin >> choice; cin.ignore();
+		while (choice != '#' && isdigit(choice) && managedItems.find(choice - '0') == managedItems.end()) {
+			cout << "Invalid Item ID. Try again" << endl;
+			cout << "> "; cin >> choice; cin.ignore();
+		}
+
+		if (choice != '#') {
+			StockUpdateProcessPage(itemTable.at(managedItems.at(choice - '0').getType()));
+		}
+	} while (choice != '#');
+	system("cls");
+}
+
+void InventoryPage(const std::string &name)
+{
+	system("cls");
+	char choice;
+
+	do {
+		cout << "Welcome" << endl;
+		cout << "1 - Add Item" << endl;
+		cout << "2 - Update Stock" << endl;
+		cout << "3 - Search Item" << endl;
+		cout << "4 - Remove Item" << endl;
+		cout << "# - Back" << endl;
+		cout << "> "; cin >> choice; cin.ignore();
+		while (choice != '1' && choice != '2' && choice != '3' && choice != '4' && choice != '#') {
+			cout << "Invalid Team ID. Try again" << endl;
+			cout << "> "; cin >> choice; cin.ignore();
+		}
+
+		if (choice != '#') {
+			switch (choice) {
+			case '1':
+				//AddItemPage(name);
+				break;
+			case '2':
+				UpdateStockPage(name);
+				break;
+			case '3':
+				//SearchItemPage(name);
+				break;
+			case '4':
+				//RemoveItemPage(name);
+				break;
+			}
+		}
+	} while (choice != '#');
+	system("cls");
+}
+
 void OICPage(const std::string &name)
 {
 	system("cls");
@@ -275,7 +386,7 @@ void OICPage(const std::string &name)
 				TeamPage(name);
 				break;
 			case '2':
-				//InventoryPage(name);
+				InventoryPage(name);
 				break;
 			}
 		}

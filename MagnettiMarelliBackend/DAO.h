@@ -18,6 +18,11 @@ public:
 		table.insert(record);
 	}
 
+	void clear()
+	{
+		table.clear();
+	}
+
 	typename std::unordered_map<PKEY, std::pair<ROWTYPE, RowStatus>>::iterator begin()
 	{
 		return table.begin();

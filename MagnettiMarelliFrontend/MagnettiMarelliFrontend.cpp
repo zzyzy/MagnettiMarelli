@@ -336,16 +336,24 @@ void InventoryPage(const std::string &oic)
 
 	system("cls");
 	do {
-		cout << "Inventory Management" << endl;
-		cout << "1 - Add Item" << endl;
-		cout << "2 - Update Stock" << endl;
-		cout << "3 - Search Item" << endl;
-		cout << "4 - Remove Item" << endl;
-		cout << "# - Back" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+		cout << "||___________________________________________________________________________||" << endl;
+		cout << "||                          Inventory Management Page                        ||" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "*" << endl;
+		cout << "* 1 - Add Item" << endl;
+		cout << "* 2 - Update Stock" << endl;
+		cout << "* 3 - Search Item" << endl;
+		cout << "* 4 - Remove Item" << endl;
+		cout << "* # - Back" << endl;
+		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
 		while (choice != '1' && choice != '2'
 			&& choice != '3' && choice != '4' && choice != '#') {
-			cout << "Invalid choice. Try again" << endl;
+			cout << "*" << endl;
+			cout << "* Invalid choice. Try again" << endl;
+			cout << "*" << endl;
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 

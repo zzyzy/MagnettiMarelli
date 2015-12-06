@@ -63,17 +63,21 @@ void commitInMemoryDb()
 
 void showTeams(const unordered_map<int, Team> &teams)
 {
-	if (teams.empty()) { cout << "No managed teams" << endl; return; }
+	if (teams.empty()) { cout << "* No managed team" << setw(62) << "*" << endl; return; }
 	for (pair<int, Team> p : teams) {
-		cout << p.first << " - " << p.second.getName() << endl;
+		cout << "* " << p.first << " - ";
+		cout.width(32); cout << std::left << p.second.getName();
+		cout.width(39); cout << std::right << p.second.getManager() << " *" << endl;
 	}
 }
 
 void showRequests(const unordered_map<int, Request> &requests)
 {
-	if (requests.empty()) { cout << "No requests" << endl; return; }
+	if (requests.empty()) { cout << "* No request" << setw(67) << "*" << endl; return; }
 	for (pair<int, Request> p : requests) {
-		cout << p.first << " - " << p.second.getTeam() << " - " << p.second.getItem() << " - " << p.second.getStatus() << endl;
+		cout << "* " << p.first << " - ";
+		cout.width(32); cout << std::left << p.second.getItem();
+		cout.width(39); cout << std::right << p.second.getStatus() << " *" << endl;
 	}
 }
 
@@ -99,23 +103,35 @@ void RequestProcessPage(const Request &request)
 	char choice;
 
 	system("cls");
-	cout << request.getTeam() << " - " << request.getItem() << endl;
-	cout << "Y - Approve" << endl;
-	cout << "N - Decline" << endl;
-	cout << "> "; cin >> choice; cin.ignore();
+	cout << "===============================================================================" << endl;
+	cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+	cout << "||___________________________________________________________________________||" << endl;
+	cout << "||                            Request Approval Page                          ||" << endl;
+	cout << "===============================================================================" << endl;
+	cout << "*" << endl;
+	cout << "* " << request.getTeam() << " - " << request.getItem() << endl;
+	cout << "*" << endl;
+	cout << "* Y - Approve" << endl;
+	cout << "* N - Decline" << endl;
+	cout << "*" << endl;
+	cout << "* > "; cin >> choice; cin.ignore();
 	while (choice != 'Y' && choice != 'N' && choice != 'y' && choice != 'n') {
-		cout << "Invalid choice. Try again" << endl;
+		cout << "*" << endl;
+		cout << "* Invalid choice. Try again" << endl;
+		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
 	}
 
 	if (choice == 'y' || choice == 'Y') {
 		if (requestService.approveRequest(request, itemService, WORKING_DAYS)) {
-			cout << "Request processed successfully!" << endl;
+			cout << "* Request processed successfully!" << endl;
 		}
 		else {
-			cout << "Not enough stock to process request" << endl;
+			cout << "* Not enough stock to process request." << endl;
 		}
 	}
+	cout << "* ";
+	system("pause");
 	system("cls");
 }
 
@@ -126,13 +142,23 @@ void TeamRequestPage(const Team &team)
 
 	system("cls");
 	do {
-		cout << team.getName() << endl;
+		cout << "===============================================================================" << endl;
+		cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+		cout << "||___________________________________________________________________________||" << endl;
+		cout << "||                        Team Request Management Page                       ||" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "*" << setw(78) << "*" << endl;
+		cout << "* " << team.getName() << setw(77 - team.getName().length()) << "*" << endl;
+		cout << "*" << setw(78) << "*" << endl;
 		requests = requestService.getRequestMap(team.getName(), Request::PENDING);
 		showRequests(requests);
-		cout << "# - Back" << endl;
+		cout << "* # - Back" << setw(69) << "*" << endl;
+		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
 		while (choice != '#' && isdigit(choice) && requests.find(choice - '0') == requests.end()) {
-			cout << "Invalid Request ID. Try again" << endl;
+			cout << "*" << endl;
+			cout << "* Invalid Request ID. Try again" << endl;
+			cout << "*" << endl;
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 
@@ -150,13 +176,22 @@ void TeamPage(const std::string &oic)
 
 	system("cls");
 	do {
-		cout << "Team Request Management" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+		cout << "||___________________________________________________________________________||" << endl;
+		cout << "||                         Team Management Page                              ||" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "*" << endl;
+		cout << "*" << setw(78) << "<Manager> *" << endl;
 		teams = teamService.getTeamMap(oic);
 		showTeams(teams);
-		cout << "# - Back" << endl;
+		cout << "* # - Back" << setw(69) << "*" << endl;
+		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
 		while (choice != '#' && isdigit(choice) && teams.find(choice - '0') == teams.end()) {
-			cout << "Invalid Team ID. Try again" << endl;
+			cout << "*" << endl;
+			cout << "* Invalid Team ID. Try again" << endl;
+			cout << "*" << endl;
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 

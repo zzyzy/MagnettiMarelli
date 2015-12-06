@@ -69,7 +69,7 @@ bool OICService::findOIC(const std::string &name, const std::string &password) c
 
 bool OICService::isLocked(const std::string &name) const
 {
-	return oicDao->at(name).first.getLocked() == OIC::LOCKED;
+	return oicDao->at(name).first.isLocked();
 }
 
 void OICService::lockOIC(const std::string &name) const

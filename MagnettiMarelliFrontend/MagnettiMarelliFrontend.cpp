@@ -5,7 +5,7 @@
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <OICService.h>
 #include <ItemService.h>
-#include <Team.h>
+#include <TeamService.h>
 #include <RequestService.h>
 
 using namespace std;
@@ -21,9 +21,11 @@ const int WORKING_DAYS = 7;
 
 OICDAO oicDao(db);
 ItemDAO itemDao(db);
+TeamDAO teamDao(db);
 RequestDAO requestDao(db);
 OICService oicService(oicDao);
 ItemService itemService(itemDao);
+TeamService teamService(teamDao);
 RequestService requestService(requestDao);
 
 void initInMemoryDb()
@@ -34,6 +36,9 @@ void initInMemoryDb()
 	cout << "Loading Item table. . ." << endl;
 	itemDao.loadTable();
 	cout << "Loading Item table. . . done!" << endl;
+	cout << "Loading Team table. . ." << endl;
+	teamDao.loadTable();
+	cout << "Loading Team table. . . done!" << endl;
 	cout << "Loading Request table. . ." << endl;
 	requestDao.loadTable();
 	cout << "Loading Request table. . . done!" << endl;
@@ -47,16 +52,19 @@ void commitInMemoryDb()
 	cout << "Saving Item table. . ." << endl;
 	itemDao.saveTable();
 	cout << "Saving Item table. . . done!" << endl;
+	cout << "Saving Team table" << endl;
+	teamDao.saveTable();
+	cout << "Saving Team table. . . done!" << endl;
 	cout << "Saving Request table" << endl;
 	requestDao.saveTable();
 	cout << "Saving Request table. . . done!" << endl;
 }
 
-void showTeams(const unordered_map<int, std::string> &teams)
+void showTeams(const unordered_map<int, Team> &teams)
 {
 	if (teams.empty()) { cout << "No managed teams" << endl; return; }
-	for (pair<int, std::string> p : teams) {
-		cout << p.first << " - " << p.second << endl;
+	for (pair<int, Team> p : teams) {
+		cout << p.first << " - " << p.second.getName() << endl;
 	}
 }
 
@@ -81,18 +89,6 @@ void showItemDetails(const Item& item)
 	cout << "Item type - " << item.getType() << endl;
 	cout << "Quantity - " << item.getQuantity() << endl;
 	cout << "In charge by - " << item.getOic() << endl;
-}
-
-unordered_map<int, string> fetchTeams(const std::string &name)
-{
-	int i = 0;
-	unordered_map<int, string> managedTeams;
-	SQLite::Statement stmt(db, "SELECT * FROM Team WHERE OIC=?");
-	stmt.bind(1, name);
-	while (stmt.executeStep()) {
-		managedTeams.insert({ ++i, stmt.getColumn("Name").getText() });
-	}
-	return managedTeams;
 }
 
 void RequestProcessPage(const Request &request)
@@ -120,15 +116,15 @@ void RequestProcessPage(const Request &request)
 	system("cls");
 }
 
-void TeamRequestPage(const std::string &team)
+void TeamRequestPage(const Team &team)
 {
 	char choice;
 	unordered_map<int, Request> requests;
 
 	system("cls");
 	do {
-		cout << team << endl;
-		requests = requestService.getRequestMap(team, Request::PENDING);
+		cout << team.getName() << endl;
+		requests = requestService.getRequestMap(team.getName(), Request::PENDING);
 		showRequests(requests);
 		cout << "# - Back" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
@@ -144,15 +140,15 @@ void TeamRequestPage(const std::string &team)
 	system("cls");
 }
 
-void TeamPage(const std::string &name)
+void TeamPage(const std::string &oic)
 {
 	char choice;
-	unordered_map<int, string> teams;
+	unordered_map<int, Team> teams;
 
 	system("cls");
 	do {
 		cout << "Team Request Management" << endl;
-		teams = fetchTeams(name);
+		teams = teamService.getTeamMap(oic);
 		showTeams(teams);
 		cout << "# - Back" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
@@ -162,7 +158,7 @@ void TeamPage(const std::string &name)
 		}
 
 		if (choice != '#' && isdigit(choice)) {
-			TeamRequestPage(teams.at(choice - '0'));
+			TeamRequestPage(teamService.fetchTeam(teams, choice - '0'));
 		}
 	} while (choice != '#');
 	system("cls");
@@ -207,7 +203,7 @@ void AddItemPage(const std::string &oic)
 	system("cls");
 }
 
-void StockUpdateProcessPage(Item &item)
+void StockUpdateProcessPage(const Item &item)
 {
 	int quantity;
 
@@ -230,7 +226,7 @@ void StockUpdateProcessPage(Item &item)
 	system("cls");
 }
 
-void UpdateStockPage(const std::string &name)
+void UpdateStockPage(const std::string &oic)
 {
 	char choice;
 	unordered_map<int, Item> items;;
@@ -238,7 +234,7 @@ void UpdateStockPage(const std::string &name)
 	system("cls");
 	do {
 		cout << "Update item" << endl;
-		items = itemService.getItemMap(name);
+		items = itemService.getItemMap(oic);
 		showItems(items);
 		cout << "# - Back" << endl;
 		cout << "> "; cin >> choice; cin.ignore();

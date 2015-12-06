@@ -100,7 +100,7 @@
       <AdditionalDependencies>$(TargetDir)MagnettiMarelliBackend.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)MagnettiMarelliBackend\database\MagnettiMarelli.db $(TargetDir) /y</Command>
+      <Command>xcopy "$(SolutionDir)MagnettiMarelliBackend\database\MagnettiMarelli.db" "$(TargetDir)" /y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -118,7 +118,7 @@
       <AdditionalDependencies>$(TargetDir)MagnettiMarelliBackend.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)MagnettiMarelliBackend\database\MagnettiMarelli.db $(TargetDir) /y</Command>
+      <Command>xcopy "$(SolutionDir)MagnettiMarelliBackend\database\MagnettiMarelli.db" "$(TargetDir)" /y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,7 +140,7 @@
       <AdditionalDependencies>$(TargetDir)MagnettiMarelliBackend.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)MagnettiMarelliBackend\database\MagnettiMarelli.db $(TargetDir) /y</Command>
+      <Command>xcopy "$(SolutionDir)MagnettiMarelliBackend\database\MagnettiMarelli.db" "$(TargetDir)" /y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -162,7 +162,7 @@
       <AdditionalDependencies>$(TargetDir)MagnettiMarelliBackend.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy $(SolutionDir)MagnettiMarelliBackend\database\MagnettiMarelli.db $(TargetDir) /y</Command>
+      <Command>xcopy "$(SolutionDir)MagnettiMarelliBackend\database\MagnettiMarelli.db" "$(TargetDir)" /y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

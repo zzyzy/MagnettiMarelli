@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <unordered_map>
 
@@ -399,20 +400,34 @@ void OICLogin()
 	std::string name;
 	std::string password;
 
-	cout << "Enter OIC name: ";
-	getline(cin, name);
+	cout << "-------------------------------------------------------------------------------" << endl;
+	cout << "*" << endl;
+	cout << "* Enter OIC name" << endl;
+	cout << "*" << endl;
+	cout << "> "; getline(cin, name);
 	if (oicService.verifyUsername(name)) {
-		cout << "Enter OIC password: ";
-		getline(cin, password);
+		cout << "-------------------------------------------------------------------------------" << endl;
+		cout << "*" << endl;
+		cout << "* Enter OIC password" << endl;
+		cout << "*" << endl;
+		cout << "> "; getline(cin, password);
 		if (oicService.verifyPassword(name, password, 3)) {
 			OICPage(name);
 		}
 		else {
-			cout << oicService.getLoginError() << endl;
+			cout << "*" << endl;
+			cout << "* " << oicService.getLoginError() << endl;
+			cout << "* ";
+			system("pause");
+			system("cls");
 		}
 	}
 	else {
-		cout << oicService.getLoginError() << endl;
+		cout << "*" << endl;
+		cout << "* " << oicService.getLoginError() << endl;
+		cout << "* ";
+		system("pause");
+		system("cls");
 	}
 }
 
@@ -423,11 +438,22 @@ void MainPage()
 	initInMemoryDb();
 	system("cls");
 	do {
-		cout << "1 - Login" << endl;
-		cout << "2 - Quit" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+		cout << "||___________________________________________________________________________||" << endl;
+		cout << "||                                 Main Page                                 ||" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "*" << endl;
+		cout << "* Welcome to Magnetti Marelli Manager" << endl;
+		cout << "*" << endl;
+		cout << "* 1 - Login" << endl;
+		cout << "* 2 - Quit" << endl;
+		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
 		while (choice != '1' && choice != '2') {
-			cout << "Invalid choice. Try again." << endl;
+			cout << "*" << endl;
+			cout << "* Invalid choice. Try again." << endl;
+			cout << "*" << endl;
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 

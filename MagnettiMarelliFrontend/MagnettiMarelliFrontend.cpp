@@ -155,15 +155,18 @@ void TeamRequestPage(const Team &team)
 		cout << "* # - Back" << setw(69) << "*" << endl;
 		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
-		while (choice != '#' && isdigit(choice) && requests.find(choice - '0') == requests.end()) {
-			cout << "*" << endl;
-			cout << "* Invalid Request ID. Try again" << endl;
-			cout << "*" << endl;
-			cout << "> "; cin >> choice; cin.ignore();
-		}
-
-		if (choice != '#' && isdigit(choice)) {
-			RequestProcessPage(requestService.fetchRequest(requests, choice - '0'));
+		while (choice != '#') {
+			if (isdigit(choice) && requests.find(choice - '0') == requests.end()
+				|| !isdigit(choice)) {
+				cout << "*" << endl;
+				cout << "* Invalid Request ID. Try again" << endl;
+				cout << "*" << endl;
+				cout << "> "; cin >> choice; cin.ignore();
+			}
+			else {
+				RequestProcessPage(requestService.fetchRequest(requests, choice - '0'));
+				break;
+			}
 		}
 	} while (choice != '#');
 	system("cls");
@@ -188,15 +191,18 @@ void TeamPage(const std::string &oic)
 		cout << "* # - Back" << setw(69) << "*" << endl;
 		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
-		while (choice != '#' && isdigit(choice) && teams.find(choice - '0') == teams.end()) {
-			cout << "*" << endl;
-			cout << "* Invalid Team ID. Try again" << endl;
-			cout << "*" << endl;
-			cout << "> "; cin >> choice; cin.ignore();
-		}
-
-		if (choice != '#' && isdigit(choice)) {
-			TeamRequestPage(teamService.fetchTeam(teams, choice - '0'));
+		while (choice != '#') {
+			if (isdigit(choice) && teams.find(choice - '0') == teams.end()
+				|| !isdigit(choice)) {
+				cout << "*" << endl;
+				cout << "* Invalid Team ID. Try again" << endl;
+				cout << "*" << endl;
+				cout << "> "; cin >> choice; cin.ignore();
+			}
+			else {
+				TeamRequestPage(teamService.fetchTeam(teams, choice - '0'));
+				break;
+			}
 		}
 	} while (choice != '#');
 	system("cls");
@@ -308,15 +314,18 @@ void UpdateStockPage(const std::string &oic)
 		cout << "* # - Back" << setw(69) << "*" << endl;
 		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
-		while (choice != '#' && isdigit(choice) && items.find(choice - '0') == items.end()) {
-			cout << "*" << endl;
-			cout << "* Invalid Item ID. Try again" << endl;
-			cout << "*" << endl;
-			cout << "> "; cin >> choice; cin.ignore();
-		}
-
-		if (choice != '#' && isdigit(choice)) {
-			StockUpdateProcessPage(itemService.fetchItem(items, choice - '0'));
+		while (choice != '#') {
+			if (isdigit(choice) && items.find(choice - '0') == items.end()
+				|| !isdigit(choice)) {
+				cout << "*" << endl;
+				cout << "* Invalid Item ID. Try again" << endl;
+				cout << "*" << endl;
+				cout << "> "; cin >> choice; cin.ignore();
+			}
+			else {
+				StockUpdateProcessPage(itemService.fetchItem(items, choice - '0'));
+				break;
+			}
 		}
 	} while (choice != '#');
 	system("cls");
@@ -419,15 +428,18 @@ void RemoveItemPage(const std::string &oic)
 		cout << "* # - Back" << setw(69) << "*" << endl;
 		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
-		while (choice != '#' && isdigit(choice) && items.find(choice - '0') == items.end()) {
-			cout << "*" << endl;
-			cout << "* Invalid Item ID. Try again" << endl;
-			cout << "*" << endl;
-			cout << "> "; cin >> choice; cin.ignore();
-		}
-
-		if (choice != '#' && isdigit(choice)) {
-			ItemRemoveProcessPage(itemService.fetchItem(items, choice - '0'));
+		while (choice != '#') {
+			if (isdigit(choice) && items.find(choice - '0') == items.end()
+				|| !isdigit(choice)) {
+				cout << "*" << endl;
+				cout << "* Invalid Item ID. Try again" << endl;
+				cout << "*" << endl;
+				cout << "> "; cin >> choice; cin.ignore();
+			}
+			else {
+				ItemRemoveProcessPage(itemService.fetchItem(items, choice - '0'));
+				break;
+			}
 		}
 	} while (choice != '#');
 	system("cls");

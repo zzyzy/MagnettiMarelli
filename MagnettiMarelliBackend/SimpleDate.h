@@ -21,6 +21,10 @@ public:
 	std::string toString() const;
 	friend std::ostream &operator<<(std::ostream& out, const SimpleDate &simpleDate);
 
+	unsigned int getYear() const { return year; }
+	unsigned int getMonth() const { return month; }
+	unsigned int getDay() const { return day; }
+
 private:
 	unsigned int year;
 	unsigned int month;

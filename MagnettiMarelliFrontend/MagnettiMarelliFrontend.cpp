@@ -173,22 +173,35 @@ void AddItemPage(const std::string &oic)
 	int quantity;
 
 	system("cls");
-	cout << "Welcome" << endl;
-	cout << "New item type (# to cancel)" << endl;
+	cout << "===============================================================================" << endl;
+	cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+	cout << "||___________________________________________________________________________||" << endl;
+	cout << "||                                Add Item Page                              ||" << endl;
+	cout << "===============================================================================" << endl;
+	cout << "*" << endl;
+	cout << "* New item type (# to cancel)" << endl;
+	cout << "*" << endl;
 	cout << "> "; getline(cin, type);
 	if (type != "#") {
 		if (itemService.findItem(type)) {
 			Item item = itemService.fetchItem(type);
-			cout << endl << "Item already exists in inventory" << endl;
-			cout << "Stock level - " << item.getQuantity() << endl;
-			cout << "In charge by - " << item.getOic() << endl;
-			cout << "Contact the officer in charge for any enquiry" << endl;
+			cout << "*" << endl;
+			cout << "* Item already exists in inventory." << endl;
+			cout << "*" << endl;
+			cout << "* Stock level  - " << item.getQuantity() << endl;
+			cout << "* In charge by - " << item.getOic() << endl;
+			cout << "* Contact the officer in charge for any enquiry." << endl;
 		}
 		else {
-			cout << "New item quantity (-1 to cancel)" << endl;
+			cout << "-------------------------------------------------------------------------------" << endl;
+			cout << "*" << endl;
+			cout << "* New item quantity (-1 to cancel)" << endl;
+			cout << "*" << endl;
 			cout << "> "; cin >> quantity; cin.ignore();
 			while (quantity != -1 && quantity <= 0) {
-				cout << "Invalid quantity. Try again" << endl;
+				cout << "*" << endl;
+				cout << "* Invalid quantity. Try again" << endl;
+				cout << "*" << endl;
 				cout << "> "; cin >> quantity; cin.ignore();
 			}
 
@@ -198,7 +211,9 @@ void AddItemPage(const std::string &oic)
 				newItem.setQuantity(quantity);
 				newItem.setOic(oic);
 				itemService.addItem(newItem);
-				cout << "New item is added." << endl;
+				cout << "*" << endl;
+				cout << "* New item is added." << endl;
+				cout << "* ";
 				system("pause");
 			}
 		}

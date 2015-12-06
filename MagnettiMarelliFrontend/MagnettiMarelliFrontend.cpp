@@ -289,20 +289,31 @@ void ItemRemoveProcessPage(const Item &item)
 	char choice;
 
 	system("cls");
-	cout << "Remove item confirmation";
+	cout << "===============================================================================" << endl;
+	cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+	cout << "||___________________________________________________________________________||" << endl;
+	cout << "||                        Item Removal Confirmation Page                     ||" << endl;
+	cout << "===============================================================================" << endl;
 	showItemDetails(item);
-	cout << "Are you sure to you want to remove this item?" << endl;
-	cout << "Y - Delete" << endl;
-	cout << "N - Cancel" << endl;
+	cout << "*" << endl;
+	cout << "* Are you sure to you want to remove this item?" << endl;
+	cout << "*" << endl;
+	cout << "* Y - Delete" << endl;
+	cout << "* N - Cancel" << endl;
+	cout << "*" << endl;
 	cout << "> "; cin >> choice; cin.ignore();
 	while (choice != 'Y' && choice != 'N' && choice != 'y' && choice != 'n') {
-		cout << "Invalid choice. Try again" << endl;
+		cout << "*" << endl;
+		cout << "* Invalid choice. Try again" << endl;
+		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
 	}
 
 	if (choice == 'y' || choice == 'Y') {
 		itemService.removeItem(item);
-		cout << "Item is removed." << endl;
+		cout << "*" << endl;
+		cout << "* Item is removed." << endl;
+		cout << "* ";
 		system("pause");
 	}
 	system("cls");

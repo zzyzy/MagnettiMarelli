@@ -373,13 +373,23 @@ void OICPage(const std::string &oic)
 
 	system("cls");
 	do {
-		cout << "Welcome " << oic << endl;
-		cout << "1 - Manage Team" << endl;
-		cout << "2 - Manage Inventory" << endl;
-		cout << "# - Logout" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+		cout << "||___________________________________________________________________________||" << endl;
+		cout << "||                            Officer In Charge Page                         ||" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "*" << endl;
+		cout << "* Welcome, Officer " << oic << endl;
+		cout << "*" << endl;
+		cout << "* 1 - Manage Team" << endl;
+		cout << "* 2 - Manage Inventory" << endl;
+		cout << "* # - Logout" << endl;
+		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
 		while (choice != '1' && choice != '2' && choice != '#') {
-			cout << "Invalid choice. Try again" << endl;
+			cout << "*" << endl;
+			cout << "* Invalid choice. Try again" << endl;
+			cout << "*" << endl;
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 

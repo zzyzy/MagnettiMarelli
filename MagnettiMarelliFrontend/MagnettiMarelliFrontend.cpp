@@ -89,9 +89,9 @@ void showItems(const unordered_map<int, Item> &items)
 
 void showItemDetails(const Item& item)
 {
-	cout << "Item type - " << item.getType() << endl;
-	cout << "Quantity - " << item.getQuantity() << endl;
-	cout << "In charge by - " << item.getOic() << endl;
+	cout << "* Item type    - " << item.getType() << endl;
+	cout << "* Quantity     - " << item.getQuantity() << endl;
+	cout << "* In charge by - " << item.getOic() << endl;
 }
 
 void RequestProcessPage(const Request &request)
@@ -256,13 +256,20 @@ void UpdateStockPage(const std::string &oic)
 void ItemDetailsPage(const std::string &type)
 {
 	system("cls");
-	cout << "Item Details" << endl;
+	cout << "===============================================================================" << endl;
+	cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+	cout << "||___________________________________________________________________________||" << endl;
+	cout << "||                              Item Details Page                            ||" << endl;
+	cout << "===============================================================================" << endl;
+	cout << "*" << endl;
 	if (itemService.findItem(type)) {
 		showItemDetails(itemService.fetchItem(type));
+		cout << "*" << endl;
 	}
 	else {
-		cout << "The item does not exist in the inventory." << endl;
+		cout << "* The item does not exist in the inventory." << endl;
 	}
+	cout << "* ";
 	system("pause");
 	system("cls");
 }
@@ -273,8 +280,14 @@ void SearchItemPage()
 
 	system("cls");
 	do {
-		cout << "Search Item" << endl;
-		cout << "Item type (# to back)" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+		cout << "||___________________________________________________________________________||" << endl;
+		cout << "||                               Item Search Page                            ||" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "*" << endl;
+		cout << "* Item type (# to back)" << endl;
+		cout << "* " << endl;
 		cout << "> "; getline(cin, type);
 
 		if (type != "#") {

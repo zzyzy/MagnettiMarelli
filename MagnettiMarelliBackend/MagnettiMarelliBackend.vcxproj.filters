@@ -93,6 +93,12 @@
     <ClInclude Include="OICService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TeamDAO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TeamService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SQLiteCpp\Column.cpp">
@@ -144,6 +150,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OICService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TeamDAO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TeamService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

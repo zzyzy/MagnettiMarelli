@@ -211,19 +211,30 @@ void StockUpdateProcessPage(const Item &item)
 	int quantity;
 
 	system("cls");
-	cout << "Welcome" << endl;
-	cout << "Item type - " << item.getType() << endl;
-	cout << "Current quantity - " << item.getQuantity() << endl;
-	cout << "New add-in quantity (-1 to cancel)" << endl;
+	cout << "===============================================================================" << endl;
+	cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+	cout << "||___________________________________________________________________________||" << endl;
+	cout << "||                         Stock Quantity Add-in Page                        ||" << endl;
+	cout << "===============================================================================" << endl;
+	cout << "*" << endl;
+	cout << "* Item type        - " << item.getType() << endl;
+	cout << "* Current quantity - " << item.getQuantity() << endl;
+	cout << "*" << endl;
+	cout << "* New add-in quantity (-1 to cancel)" << endl;
+	cout << "*" << endl;
 	cout << "> "; cin >> quantity; cin.ignore();
 	while (quantity != -1 && quantity <= 0) {
-		cout << "Invalid quantity. Try again" << endl;
+		cout << "*" << endl;
+		cout << "* Invalid quantity. Try again" << endl;
+		cout << "*" << endl;
 		cout << "> "; cin >> quantity; cin.ignore();
 	}
 
 	if (quantity != -1) {
 		itemService.addStock(item, quantity);
-		cout << "Quantity of item is updated." << endl;
+		cout << "*" << endl;
+		cout << "* Quantity of item is updated." << endl;
+		cout << "* ";
 		system("pause");
 	}
 	system("cls");

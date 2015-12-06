@@ -236,13 +236,21 @@ void UpdateStockPage(const std::string &oic)
 
 	system("cls");
 	do {
-		cout << "Update item" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+		cout << "||___________________________________________________________________________||" << endl;
+		cout << "||                              Update Stock Page                            ||" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "*" << setw(78) << "*" << endl;
 		items = itemService.getItemMap(oic);
 		showItems(items);
-		cout << "# - Back" << endl;
+		cout << "* # - Back" << setw(69) << "*" << endl;
+		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
 		while (choice != '#' && isdigit(choice) && items.find(choice - '0') == items.end()) {
-			cout << "Invalid Item ID. Try again" << endl;
+			cout << "*" << endl;
+			cout << "* Invalid Item ID. Try again" << endl;
+			cout << "*" << endl;
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 

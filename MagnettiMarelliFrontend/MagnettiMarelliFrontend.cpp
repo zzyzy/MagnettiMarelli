@@ -79,9 +79,11 @@ void showRequests(const unordered_map<int, Request> &requests)
 
 void showItems(const unordered_map<int, Item> &items)
 {
-	if (items.empty()) { cout << "No managed items" << endl; return; }
+	if (items.empty()) { cout << "* No managed item" << setw(62) << "*" << endl; return; }
 	for (pair<int, Item> p : items) {
-		cout << p.first << " - " << p.second.getType() << " - " << p.second.getQuantity() << " ea" << endl;
+		cout << "* " << p.first << " - ";
+		cout.width(32); cout << std::left << p.second.getType();
+		cout.width(36); cout << std::right << p.second.getQuantity() << " ea *" << endl;
 	}
 }
 
@@ -313,13 +315,21 @@ void RemoveItemPage(const std::string &oic)
 
 	system("cls");
 	do {
-		cout << "Remove item" << endl;
+		cout << "===============================================================================" << endl;
+		cout << "||                     Magnetti Marelli Management System                    ||" << endl;
+		cout << "||___________________________________________________________________________||" << endl;
+		cout << "||                              Item Removal Page                            ||" << endl;
+		cout << "===============================================================================" << endl;
 		items = itemService.getItemMap(oic);
+		cout << "*" << setw(78) << "*" << endl;
 		showItems(items);
-		cout << "# - Back" << endl;
+		cout << "* # - Back" << setw(69) << "*" << endl;
+		cout << "*" << endl;
 		cout << "> "; cin >> choice; cin.ignore();
 		while (choice != '#' && isdigit(choice) && items.find(choice - '0') == items.end()) {
-			cout << "Invalid Item ID. Try again" << endl;
+			cout << "*" << endl;
+			cout << "* Invalid Item ID. Try again" << endl;
+			cout << "*" << endl;
 			cout << "> "; cin >> choice; cin.ignore();
 		}
 

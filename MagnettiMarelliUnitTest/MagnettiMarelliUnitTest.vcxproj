@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OICTest.cpp" />
+    <ClCompile Include="RequestTest.cpp" />
     <ClCompile Include="SimpleDateTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

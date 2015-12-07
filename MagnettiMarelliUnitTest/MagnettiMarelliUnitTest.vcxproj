@@ -178,6 +178,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TeamServiceTest.cpp" />
     <ClCompile Include="TeamTest.cpp" />
     <ClCompile Include="TestDatabase.cpp" />
     <ClCompile Include="UtilsTest.cpp" />

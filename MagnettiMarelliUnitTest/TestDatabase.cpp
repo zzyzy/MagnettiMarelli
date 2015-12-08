@@ -1,7 +1,12 @@
 #include "stdafx.h"
 #include "TestDatabase.h"
 
+#ifdef _DEBUG
 SQLite::Database TestDatabase::db(MAGNETTIDB, SQLITE_OPEN_READWRITE);
+#else
+SQLite::Database TestDatabase::db("MagnettiMarelli.db", SQLITE_OPEN_READWRITE);
+#endif
+
 OICDAO TestDatabase::oicDao(db);
 ItemDAO TestDatabase::itemDao(db);
 TeamDAO TestDatabase::teamDao(db);

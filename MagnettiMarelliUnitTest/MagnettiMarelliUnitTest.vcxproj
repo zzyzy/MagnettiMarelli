@@ -167,9 +167,11 @@
     <ClInclude Include="TestDatabase.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ItemServiceTest.cpp" />
     <ClCompile Include="ItemTest.cpp" />
     <ClCompile Include="OICServiceTest.cpp" />
     <ClCompile Include="OICTest.cpp" />
+    <ClCompile Include="RequestServiceTest.cpp" />
     <ClCompile Include="RequestTest.cpp" />
     <ClCompile Include="SimpleDateTest.cpp" />
     <ClCompile Include="stdafx.cpp">
